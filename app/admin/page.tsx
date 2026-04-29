@@ -16,7 +16,6 @@ export default async function AdminPage() {
     }),
     prisma.post.findMany({
       orderBy: { createdAt: 'desc' },
-      include: { author: { select: { username: true } } },
       select: {
         id: true, title: true, slug: true, published: true, views: true, createdAt: true,
         author: { select: { username: true } },
