@@ -19,7 +19,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 RUN groupadd --system --gid 1001 nodejs && \
-    useradd --system --uid 1001 --gid nodejs nextjs
+    useradd --system --uid 1001 --gid nodejs --create-home nextjs
 
 # Copy necessary files
 COPY --from=builder /app/public ./public
@@ -28,6 +28,7 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
 # Create uploads and data directories
 RUN mkdir -p /app/public/uploads /app/data && \
