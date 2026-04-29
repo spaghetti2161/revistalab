@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Database
+data/
+*.sqlite
+*.sqlite-journal
+
+# Uploads
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Build
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
