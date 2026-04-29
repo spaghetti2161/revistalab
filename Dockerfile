@@ -18,6 +18,8 @@ FROM node:20-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --system --gid 1001 nodejs && \
     useradd --system --uid 1001 --gid nodejs --create-home nextjs
 
@@ -30,9 +32,9 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
-# Create uploads and data directories
+# Create uploads and data directories, fix permissions
 RUN mkdir -p /app/public/uploads /app/data && \
-    chown -R nextjs:nodejs /app/public/uploads /app/data
+    chown -R nextjs:nodejs /app/public/uploads /app/data /app/node_modules/.prisma /app/node_modules/@prisma /app/node_modules/prisma
 
 # Entrypoint script
 COPY --chown=nextjs:nodejs entrypoint.sh ./
