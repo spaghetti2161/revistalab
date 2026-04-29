@@ -1,5 +1,4 @@
-FROM node:20-alpine AS base
-RUN apk add --no-cache openssl
+FROM node:20-slim AS base
 WORKDIR /app
 
 # Install dependencies
@@ -15,12 +14,12 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production runner
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs nextjs
 
 # Copy necessary files
 COPY --from=builder /app/public ./public

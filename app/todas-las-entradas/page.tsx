@@ -3,7 +3,7 @@ import PostCard from '@/components/PostCard'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Todas las entradas' }
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function TodasLasEntradasPage() {
   const posts = await prisma.post.findMany({

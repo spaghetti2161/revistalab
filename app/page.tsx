@@ -4,7 +4,7 @@ import FeaturedPost from '@/components/FeaturedPost'
 import HorizontalPostCard from '@/components/HorizontalPostCard'
 import PostCard from '@/components/PostCard'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 async function getData() {
   const [latest, mostVisited, recent] = await Promise.all([
