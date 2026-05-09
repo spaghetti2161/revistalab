@@ -22,7 +22,7 @@ export default function FeaturedPost({ post }: { post: Post }) {
 
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
-      <article className="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-border hover:border-accent/50 transition-colors duration-300">
+      <article className="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-elevated rounded-2xl overflow-hidden hover:ring-1 hover:ring-accent/30 transition-all duration-300">
         {/* Image */}
         <div className="relative aspect-video lg:aspect-auto lg:min-h-72 bg-overlay overflow-hidden">
           {post.coverImage ? (

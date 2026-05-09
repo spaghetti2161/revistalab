@@ -59,12 +59,17 @@ export default function EditarEntradaPage() {
     const file = e.target.files?.[0]
     if (!file) return
     setUploading(true)
+    setError('')
     try {
       const fd = new FormData()
       fd.append('file', file)
       const res = await fetch('/api/upload', { method: 'POST', body: fd })
       const data = await res.json()
-      if (data.url) setForm((prev) => ({ ...prev, coverImage: data.url }))
+      if (!res.ok) {
+        setError(data.error || 'Error al subir imagen')
+      } else if (data.url) {
+        setForm((prev) => ({ ...prev, coverImage: data.url }))
+      }
     } catch {
       setError('Error al subir imagen')
     } finally {

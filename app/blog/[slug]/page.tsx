@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import ViewTracker from '@/components/ViewTracker'
+import PostActions from '@/components/PostActions'
+import { getCurrentUser } from '@/lib/auth'
 
 type Props = { params: { slug: string } }
 
@@ -28,15 +30,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 0
 
 export default async function PostPage({ params }: Props) {
-  const post = await prisma.post.findUnique({
-    where: { slug: params.slug, published: true },
-    include: {
-      author: { select: { name: true, username: true, avatar: true } },
-      categories: { include: { category: { include: { parent: true } } } },
-    },
-  })
+  const [post, currentUser] = await Promise.all([
+    prisma.post.findUnique({
+      where: { slug: params.slug, published: true },
+      include: {
+        author: { select: { name: true, username: true, avatar: true } },
+        categories: { include: { category: { include: { parent: true } } } },
+      },
+    }),
+    getCurrentUser(),
+  ])
 
   if (!post) notFound()
+
+  const canEdit =
+    currentUser?.username === post.author.username || currentUser?.role === 'ADMIN'
 
   const relatedPosts = await prisma.post.findMany({
     where: {
@@ -95,6 +103,15 @@ export default async function PostPage({ params }: Props) {
           <time>{formattedDate}</time>
           <span className="text-border">·</span>
           <span>{post.views.toLocaleString('es-AR')} lecturas</span>
+          {canEdit && (
+            <>
+              <span className="text-border">·</span>
+              <PostActions
+                slug={post.slug}
+                redirectTo={`/profile/${post.author.username}`}
+              />
+            </>
+          )}
         </div>
 
         {/* Cover image */}

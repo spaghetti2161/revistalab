@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import PostCard from '@/components/PostCard'
+import PostActions from '@/components/PostActions'
 import { getCurrentUser } from '@/lib/auth'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -117,14 +118,11 @@ export default async function ProfilePage({ params }: Props) {
                   </div>
                 )}
                 {isOwner && (
-                  <div className="mt-2 flex gap-2">
-                    <Link
-                      href={`/editar/${post.slug}`}
-                      className="text-xs text-text-faint hover:text-accent transition-colors"
-                    >
-                      Editar
-                    </Link>
-                  </div>
+                  <PostActions
+                    slug={post.slug}
+                    redirectTo={`/profile/${params.username}`}
+                    className="mt-2"
+                  />
                 )}
               </div>
             ))}

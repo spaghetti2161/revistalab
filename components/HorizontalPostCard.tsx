@@ -22,7 +22,7 @@ export default function HorizontalPostCard({ post, rank }: { post: Post; rank: n
 
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
-      <article className="flex items-start gap-5 p-4 border border-border hover:border-accent/40 transition-colors duration-200">
+      <article className="flex items-start gap-5 p-4 bg-elevated rounded-xl hover:bg-overlay transition-colors duration-200">
         {/* Rank */}
         <span className="text-3xl font-light text-border group-hover:text-accent/40 transition-colors flex-shrink-0 w-8 text-center leading-none mt-1">
           {String(rank).padStart(2, '0')}
@@ -49,7 +49,7 @@ export default function HorizontalPostCard({ post, rank }: { post: Post; rank: n
 
         {/* Thumbnail */}
         {post.coverImage && (
-          <div className="relative w-20 h-14 bg-overlay flex-shrink-0 overflow-hidden">
+          <div className="relative w-20 h-14 bg-overlay flex-shrink-0 overflow-hidden rounded-lg">
             <Image
               src={post.coverImage}
               alt={post.title}

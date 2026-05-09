@@ -35,7 +35,12 @@ export async function POST(request: NextRequest) {
     }
 
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
+
+    // In standalone mode Passenger may set cwd to .next/standalone/ — resolve to project root
+    const cwd = process.cwd()
+    const uploadDir = cwd.endsWith('standalone')
+      ? join(cwd, '..', '..', 'public', 'uploads')
+      : join(cwd, 'public', 'uploads')
 
     await mkdir(uploadDir, { recursive: true })
     await writeFile(join(uploadDir, filename), buffer)

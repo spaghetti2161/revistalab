@@ -15,53 +15,52 @@ type Post = {
 
 export default function PostCard({ post }: { post: Post }) {
   const date = new Date(post.createdAt).toLocaleDateString('es-AR', {
-    year: 'numeric',
-    month: 'short',
     day: 'numeric',
+    month: 'short',
+    year: 'numeric',
   })
+
+  const category = post.categories[0]?.category
 
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
-      <article className="bg-elevated border border-border hover:border-accent/40 transition-colors duration-200 h-full flex flex-col">
+      <article className="bg-elevated rounded-2xl overflow-hidden flex flex-col h-full transition-transform duration-200 group-hover:-translate-y-0.5">
         {/* Image */}
-        <div className="relative aspect-video bg-overlay overflow-hidden">
+        <div className="relative aspect-[4/3] bg-overlay overflow-hidden flex-shrink-0">
           {post.coverImage ? (
             <Image
               src={post.coverImage}
               alt={post.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-text-faint text-4xl font-light opacity-20">{post.title[0]}</span>
+              <span className="text-text-faint text-5xl font-light opacity-10 select-none">
+                {post.title[0]}
+              </span>
+            </div>
+          )}
+
+          {/* Category badge */}
+          {category && (
+            <div className="absolute bottom-3 left-3">
+              <span className="bg-accent text-base text-xs font-semibold px-2.5 py-1 rounded-full">
+                {category.name}
+              </span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-5 flex flex-col flex-1">
-          {post.categories.length > 0 && (
-            <span className="text-xs text-accent tracking-widest uppercase mb-2">
-              {post.categories[0].category.name}
-            </span>
-          )}
-
-          <h3 className="text-base font-medium text-text-primary group-hover:text-accent transition-colors leading-snug line-clamp-2 mb-2">
+        <div className="p-4 flex flex-col flex-1 gap-3">
+          <h3 className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors duration-150 leading-snug line-clamp-3 flex-1">
             {post.title}
           </h3>
 
-          {post.excerpt && (
-            <p className="text-sm text-text-muted leading-relaxed line-clamp-2 mb-4 flex-1">
-              {post.excerpt}
-            </p>
-          )}
-
-          <div className="flex items-center justify-between mt-auto pt-3 border-t border-border">
-            <span className="text-xs text-text-faint">{post.author.name || post.author.username}</span>
-            <div className="flex items-center gap-2 text-xs text-text-faint">
-              <time>{date}</time>
-            </div>
+          <div className="flex items-center justify-between text-xs text-text-faint">
+            <span className="truncate max-w-[60%]">{post.author.name || post.author.username}</span>
+            <time className="flex-shrink-0">{date}</time>
           </div>
         </div>
       </article>

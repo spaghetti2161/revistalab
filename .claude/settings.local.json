@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
-      "WebFetch(domain:www.beewh.com)"
+      "WebFetch(domain:www.beewh.com)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }

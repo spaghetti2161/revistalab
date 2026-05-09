@@ -22,13 +22,13 @@ async function getData() {
     prisma.post.findMany({
       where: { published: true },
       orderBy: { createdAt: 'desc' },
-      take: 7,
+      take: 9,
       include: { author: { select: { name: true, username: true } }, categories: { include: { category: true } } },
     }),
   ])
 
   // remove the latest from the recent grid to avoid duplication
-  const recentGrid = recent.filter((p) => p.id !== latest?.id).slice(0, 6)
+  const recentGrid = recent.filter((p) => p.id !== latest?.id).slice(0, 8)
 
   return { latest, mostVisited, recentGrid }
 }
@@ -73,7 +73,7 @@ export default async function HomePage() {
               <span className="text-accent text-xs font-medium tracking-widest uppercase">Entradas recientes</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {recentGrid.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
