@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1",
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
